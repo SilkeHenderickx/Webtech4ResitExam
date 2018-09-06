@@ -45,7 +45,7 @@ public class JokeController {
        } catch (JSONException e) {
            return e.getMessage();
        }
-       
+
    }
 		   
    @RequestMapping("/joke_post")
