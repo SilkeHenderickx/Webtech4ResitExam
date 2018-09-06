@@ -19,7 +19,7 @@ def view_movies(request):
         movie = Movie(text = line)
         movie.save()
     f.close()
-
+# movie is not serializable
     movies = Movie.objects.all()
     results = [movie.to_json() for movie in movies]
     return Response(results, status=status.HTTP_201_CREATED)
