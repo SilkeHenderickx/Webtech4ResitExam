@@ -1,8 +1,13 @@
 package edu.ap.spring.controller;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -28,8 +33,19 @@ public class JokeController {
            System.out.println(e.getMessage());
        }
 
-       System.out.println(jokeJson.toString());
-       return "";
+       JSONObject jsonObject;
+       try {
+           jsonObject = new JSONObject(jokeJson);
+           String j =  jsonObject.get("value").toString();
+           jsonObject = new JSONObject(j);
+           String joketxt = jsonObject.get("joke").toString();
+
+
+           return joketxt;
+       } catch (JSONException e) {
+           return e.getMessage();
+       }
+       
    }
 		   
    @RequestMapping("/joke_post")
