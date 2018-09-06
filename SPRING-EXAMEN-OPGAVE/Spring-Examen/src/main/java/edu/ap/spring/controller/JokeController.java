@@ -17,8 +17,19 @@ public class JokeController {
    }
        
    @RequestMapping("/joke")
-   public String joke() {
-	   return "";
+   @ResponseBody
+   public String joke(@RequestParam("firstname") String firstName,
+                      @RequestParam("lastname") String lastName) {
+        String jokeJson = "";
+
+       try {
+           jokeJson = jsonGetRequest(firstName, lastName);
+       } catch (Exception e) {
+           System.out.println(e.getMessage());
+       }
+
+       System.out.println(jokeJson.toString());
+       return "";
    }
 		   
    @RequestMapping("/joke_post")
