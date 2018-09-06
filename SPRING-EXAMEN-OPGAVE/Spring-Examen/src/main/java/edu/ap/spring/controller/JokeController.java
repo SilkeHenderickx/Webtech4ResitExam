@@ -1,9 +1,11 @@
 package edu.ap.spring.controller;
 
 import com.fasterxml.jackson.databind.util.JSONPObject;
+import edu.ap.spring.jpa.JokeRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 @Controller
 @Scope("session")
@@ -20,7 +23,14 @@ public class JokeController {
    
    public JokeController() {
    }
-       
+
+   JokeRepository repository;
+
+   @Autowired
+   public void setJokeRepository(JokeRepository repository){
+       this.repository = repository;
+   }
+
    @RequestMapping("/joke")
    @ResponseBody
    public String joke(@RequestParam("firstname") String firstName,
@@ -41,6 +51,10 @@ public class JokeController {
            String joketxt = jsonObject.get("joke").toString();
 
 
+           List<String> l = repository.findAll();
+           if (!l.contains(joketxt)) {
+               repository.save(joketxt);
+           }
            return joketxt;
        } catch (JSONException e) {
            return e.getMessage();
